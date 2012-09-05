@@ -410,7 +410,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 		mainPanel.add(new_page);
 		mainPanel.add(download_repository);
 		
-		RootPanel.get("stockList").add(frame, 0, 80);
+		RootPanel.get("stockList").add(frame, RootPanel.get("stockList").getAbsoluteLeft(), RootPanel.get("stockList").getAbsoluteTop());
 		RootPanel.get("stockList").add(bottomOfScreen, 5, (int) (Window.getClientHeight() / 1.1));
 		// RootPanel.get().add(tripleTable, 5,
 		// (int) ((Window.getClientHeight() / 1.1) + 30));
