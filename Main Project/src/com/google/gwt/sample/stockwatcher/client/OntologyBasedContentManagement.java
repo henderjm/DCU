@@ -1,36 +1,24 @@
 package com.google.gwt.sample.stockwatcher.client;
 
-import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.apache.commons.lang.StringEscapeUtils;
-
-import com.google.gwt.sample.stockwatcher.shared.FieldVerifier;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.*;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
@@ -46,7 +34,6 @@ public class OntologyBasedContentManagement implements EntryPoint {
 	private String export_fp = "";
 	private boolean repository_downloaded = false;
 	// private ColumnModel cm = new ColumnModel(Stocks);
-	private ChangeWebPage cwp = new ChangeWebPage();
 	/*
 	 * Create interface instances
 	 */
@@ -411,7 +398,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 		mainPanel.add(download_repository);
 		
 		RootPanel.get("stockList").add(frame, RootPanel.get("stockList").getAbsoluteLeft(), RootPanel.get("stockList").getAbsoluteTop());
-		RootPanel.get("stockList").add(bottomOfScreen, 5, (int) (Window.getClientHeight() / 1.1));
+		RootPanel.get("stockList").add(bottomOfScreen, RootPanel.get("stockList").getAbsoluteLeft(), Window.getClientHeight());
 		// RootPanel.get().add(tripleTable, 5,
 		// (int) ((Window.getClientHeight() / 1.1) + 30));
 //		RootPanel.get("stockList").add(save, 700, (int) ((Window.getClientHeight() / 1.1) + 30));
@@ -802,7 +789,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			tripleTable.setText(row, 2, subject);
 		}
 
-		tripleTable.setWidget(0, 24, save);
+		tripleTable.setWidget(0, 5, save);
 		Button removeButton = new Button("x"); // Will remove a triple from the
 												// list
 		Button suggestion = new Button("Suggestions");
@@ -827,7 +814,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 						}
 						rowIndex = tripleTable.getRowCount();
 						
-						tripleTable.setWidget(rowIndex -1, 24, save);
+						tripleTable.setWidget(rowIndex -1, 5, save);
 					}
 
 				});
@@ -903,7 +890,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			return;
 		}
 
-		tripleTable.setWidget(0, 24, save);
+		tripleTable.setWidget(0, 5, save);
 		Button removeButton = new Button("x"); // Will remove a triple from the
 												// list
 		Button suggestion = new Button("Suggestions");
