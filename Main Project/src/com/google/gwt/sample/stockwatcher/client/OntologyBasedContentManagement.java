@@ -27,6 +27,14 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class OntologyBasedContentManagement implements EntryPoint {
+	private MenuBar menuBar_2 = new MenuBar(true);	
+	private MenuBar menuBar_3 = new MenuBar(true);
+	private MenuItem Properties = new MenuItem("Properties", false, menuBar_2);
+	private MenuItem mntmObject = new MenuItem("Object", false, (Command) null);
+	private MenuItem mntmData = new MenuItem("Data", false, (Command) null);
+	private MenuBar menuBar = new MenuBar(false);
+	private MenuBar Ontology_Contents_Holder = new MenuBar(false);
+	private MenuItem Ontology_Name = new MenuItem("Ontology", false, Ontology_Contents_Holder);
 	private Anchor new_page = new Anchor("Ontology Tree");
 	private Anchor home_page = new Anchor("Home");
 	private Anchor to_content = new Anchor("To Content");
@@ -96,7 +104,6 @@ public class OntologyBasedContentManagement implements EntryPoint {
 	private Button search = new Button(); // button to trigger search
 	private Button webSend = new Button();
 	private Button save = new Button(); // saves selected triples to arraylist
-	private Button objectFromContent = new Button();
 	private Button load_ontology_web_button = new Button();
 	private Button user_subject_button = new Button();
 	private Button close = new Button();
@@ -144,6 +151,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 	private int left = (int) (Window.getClientWidth() / 1.5), top = (int) Window.getClientHeight() / 4;
 	private String link_to_content_page;
 	private int rowIndex = 0;
+	private MenuItem Classes;
 
 	/*
 	 * Entry Point method.
@@ -174,44 +182,42 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			}
 		};
 		loadFile.addClickHandler(load_handler);
-		
+
 		ontologies = new ListBox();
-		ontologies.setWidth("150px");
-		ontologies.setHeight("200px");
+		ontologies.setSize("152px", "18px");
+	
 		uploadedOntologies.add(ontologies);
 		uploadedOntologies.setSpacing(5);
-//		secondPanel.add(uploadedOntologies);
+		// secondPanel.add(uploadedOntologies);
 
 		/*
 		 * end file creation
 		 */
 		logger.log(Level.SEVERE, "Log!");
-		Ont_Table.setText(0, 0, "Class"); // 3 columns
-		Ont_Table.setText(0, 2, "Object Property");
-		Ont_Table.setText(0, 4, "Data Property");
+		Ont_Table.setText(1, 0, "Class"); // 3 columns
+		Ont_Table.setText(1, 2, "Object Property");
+		Ont_Table.setText(1, 4, "Data Property");
 		double wi = Window.getClientWidth() / 3.5;
 		String tablewidth = Double.toString(wi);
 		tripleTable.getColumnFormatter().setWidth(0, tablewidth);
 		tripleTable.getColumnFormatter().setWidth(1, tablewidth);
 		tripleTable.getColumnFormatter().setWidth(2, tablewidth);
+		tripleTable.setStyleName("Prompt-User");
 		tripleTable.setText(0, 0, "Subject");
 		tripleTable.setText(0, 1, "Predicate");
 		tripleTable.setText(0, 2, "Object");
-		tripleTable.getRowFormatter().addStyleName(0, "watchListHeader");
+		tripleTable.getRowFormatter().addStyleName(0, "Prompt-User");
 		tripleTable.getColumnFormatter().addStyleName(0, "columnOne");
+		tripleTable.getColumnFormatter().addStyleName(1, "columnTwo");
+		tripleTable.getColumnFormatter().addStyleName(2, "columnThree");
 		tripleTable.addStyleName("tripleTable");
 		row = tripleTable.getRowCount();
 
 		webBox.setText(url);
 		webBox.setWidth("340px");
-		/*
-		 * Setting up query box
-		 */
-		queryBox.setHeight("300px");
 		frameWidth = String.valueOf(Window.getClientWidth() / 3.3) + "px";
-		queryBox.setWidth(frameWidth);
 		queryBox.setText("\n\n\n\n\n\t\t\t\t\tEnter Query");
-		queryBox.setSize(frameWidth, "300px");
+		queryBox.setSize("369px", "332px");
 
 		queryBox.addFocusHandler(new FocusHandler() {
 
@@ -223,7 +229,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 		});
 		ontology_from_disk.setText("/Users/markhender/ontologies/pizzas/pizza.rdf");
 		ontology_from_disk.setWidth("340px");
-		frame = new Frame(); // chosen URL
+		frame = new Frame();
 		frame.setUrl(url);
 		frameWidth = String.valueOf(Window.getClientWidth() / 1.5) + "px"; // works
 																			// cross
@@ -253,7 +259,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 						// ft.getText(count, 0));
 						printSuggestedSubject(ft.getText(count, 0));
 						addPredicate(ft.getText(count, 1));
-						if(ft.getText(count, 1).endsWith("*"))
+						if (ft.getText(count, 1).endsWith("*"))
 							addLitObject(ft.getText(count, 2));
 						else
 							addObject(ft.getText(count, 2));
@@ -281,10 +287,10 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			}
 		});
 		addPanel.add(webBox);
-		addPanel.add(webSend);
 
 		searchPanel.add(content); // content search box
 		searchPanel.add(search); // trigger content search button
+		search.setHeight("37px");
 		dBox.setText("Triple Report");
 		close.setText("Close");
 		close.addClickListener(new ClickListener() {
@@ -299,16 +305,15 @@ public class OntologyBasedContentManagement implements EntryPoint {
 
 		loadOntologyInternet.add(ontology_from_internet);
 		loadOntologyInternet.add(load_ontology_web_button);
-		// searchPanel.add(objectFromContent);
 		radioButtonPanel.add(radioA);
 		radioButtonPanel.add(radioB);
 		searchPanel.add(radioButtonPanel);
 		bottomOfScreen.add(searchPanel);
 		bottomOfScreen.add(tripleTable);
+		tripleTable.setSize("981px", "67px");
 		// bottomOfScreen.setSpacing(10);
-		objectFromContent.setText("Object");
-		search.setText("Subject");
-		content.setWidth(String.valueOf(Window.getClientWidth() / 4) + "px");
+		search.setText("Enter");
+		content.setSize("282px", "29px");
 		ListBox listbox = new ListBox();
 		ontology_Classes = new ListBox(); // Ontology class listbox
 		property_Resources = new ListBox(); // " property listbox
@@ -320,12 +325,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 		listbox.setWidth("100px");
 		listbox.setHeight("400px");
 		save.setText("Save");
-
-		webSend.setText("GO");
 		listbox.setVisible(false);
-		// Add widgets to main vertical Panel
-		// mainPanel.add(secondPanel);
-
 		/*
 		 * before new page
 		 */
@@ -335,20 +335,18 @@ public class OntologyBasedContentManagement implements EntryPoint {
 		final HorizontalPanel hori = new HorizontalPanel();
 		contextpanel.setWidget(hori);
 		entercontext.setText("context");
-		// hori.add(entercontext);
 		hori.add(ok);
-		// contextHolder.add(hori);
-		final ClickHandler download_handler = new ClickHandler(){
+		final ClickHandler download_handler = new ClickHandler() {
 			@Override
-			public void onClick(ClickEvent event){
+			public void onClick(ClickEvent event) {
 				greetingService.downloadRepository(entercontext.getText(), new downloadRepository());
-				if(repository_downloaded)
+				if (repository_downloaded)
 					loadPageTwo(export_fp);
 				repository_downloaded = true;
-				logger.log(Level.SEVERE,"download_handler called");
+				logger.log(Level.SEVERE, "download_handler called");
 			}
 		};
-		ClickHandler newpage_handler = new ClickHandler(){
+		ClickHandler newpage_handler = new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
@@ -356,15 +354,14 @@ public class OntologyBasedContentManagement implements EntryPoint {
 				ok.addClickHandler(new ClickHandler() {
 					@Override
 					public void onClick(ClickEvent event) {
-						String input = entercontext.getText();
-						if(repository_downloaded)
+						if (repository_downloaded)
 							loadPageTwo(export_fp);
-						else{
+						else {
 							download_handler.onClick(event);
-							
+
 						}
 						contextpanel.hide();
-						
+
 					}
 
 				});
@@ -381,14 +378,28 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				loadHomePage();
-//				home_page.setVisible(false);
 			}
 		});
 		/* home page */
-		
-		mainPanel.add(frame); // browser
+
+		//mainPanel.add(frame); // browser
 		mainPanel.add(uploadedOntologies);
 		mainPanel.add(addPanel); // url for browser
+				addPanel.add(webSend);
+				webSend.setHeight("32px");
+		
+				webSend.setText("GO");
+				
+						// Listen for mouse events on webSend Button
+						// to get new website
+						webSend.addClickHandler(new ClickHandler() {
+							public void onClick(ClickEvent event) {
+								frame.setUrl(webBox.getText()); // take url from textbox
+								logger.log(Level.SEVERE, frame.getUrl());
+								content.setFocus(true);
+								content.selectAll();
+							}
+						});
 		mainPanel.add(loadOntologyInternet);
 		mainPanel.add(Ont_Table); // listboxes
 		mainPanel.add(queryBox);
@@ -396,25 +407,12 @@ public class OntologyBasedContentManagement implements EntryPoint {
 		mainPanel.add(queryButton);
 		mainPanel.add(new_page);
 		mainPanel.add(download_repository);
-		
-		RootPanel.get("stockList").add(frame, RootPanel.get("stockList").getAbsoluteLeft(), RootPanel.get("stockList").getAbsoluteTop());
-		RootPanel.get("stockList").add(bottomOfScreen, RootPanel.get("stockList").getAbsoluteLeft(), Window.getClientHeight());
-		// RootPanel.get().add(tripleTable, 5,
-		// (int) ((Window.getClientHeight() / 1.1) + 30));
-//		RootPanel.get("stockList").add(save, 700, (int) ((Window.getClientHeight() / 1.1) + 30));
-		RootPanel.get("stockList").add(form, frame.getOffsetWidth(), frame.getAbsoluteTop());
-		RootPanel.get("stockList").add(mainPanel, frame.getOffsetWidth() + 10, form.getOffsetHeight() + frame.getAbsoluteTop());
 
-		// Listen for mouse events on webSend Button
-		// to get new website
-		webSend.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				frame.setUrl(webBox.getText()); // take url from textbox
-				logger.log(Level.SEVERE, frame.getUrl());
-				content.setFocus(true);
-				content.selectAll();
-			}
-		});
+		RootPanel.get("stockList").add(frame, RootPanel.get("stockList").getAbsoluteLeft(), RootPanel.get("stockList").getAbsoluteTop());
+		RootPanel.get("stockList").add(bottomOfScreen, 0, 725);
+		bottomOfScreen.setSize("984px", "128px");
+		RootPanel.get("stockList").add(form, frame.getOffsetWidth() + 10, frame.getAbsoluteTop());
+		RootPanel.get("stockList").add(mainPanel, frame.getOffsetWidth() + 10, form.getOffsetHeight() + frame.getAbsoluteTop());
 		// listen for keyboard events in the textbox
 		webBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
@@ -430,9 +428,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 
 			@Override
 			public void onLoad(LoadEvent event) {
-				// frame.setUrl(event.get)
-
-				// logger.log(Level.SEVERE, "URL: " + cwp.getIframeUri(frame));
+				
 			}
 
 		});
@@ -444,7 +440,6 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			}
 
 			@Override
-			// If request to server was successful
 			public void onSuccess(ArrayList<String> result) {
 				classes = result;
 				ontology.get(ontology.size() - 1).setClasses(result);
@@ -459,7 +454,6 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			}
 
 			@Override
-			// If request to server was successful
 			public void onSuccess(ArrayList<String> result) {
 				properties = result;
 				ontology.get(ontology.size() - 1).setProperties(result);
@@ -471,12 +465,10 @@ public class OntologyBasedContentManagement implements EntryPoint {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			// If request to server was successful
 			public void onSuccess(ArrayList<String> result) {
 				literals = result;
 				ontology.get(ontology.size() - 1).setLiterals(result);
@@ -511,25 +503,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			}
 
 		};
-		@SuppressWarnings("unused")
-		final AsyncCallback<Integer[]> objectIndexOfContent = new AsyncCallback<Integer[]>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onSuccess(Integer[] result) {
-				if (result[0] != -99 && result[1] != -99) {
-					// word found
-					printSubject();
-				}
-				Window.alert("Not valid content!\n " + "Please check your spelling");
-			}
-
-		};
 		final AsyncCallback<String> getOntName = new AsyncCallback<String>() {
 			@Override
 			public void onFailure(Throwable caught) {
@@ -538,7 +512,6 @@ public class OntologyBasedContentManagement implements EntryPoint {
 
 			@Override
 			public void onSuccess(String result) {
-				// TODO Auto-generated method stub
 				ontName = result;
 				ontology.get(ontology.size() - 1).setName(result);
 				logger.log(Level.SEVERE, ("OntologyName = " + ontName));
@@ -550,7 +523,6 @@ public class OntologyBasedContentManagement implements EntryPoint {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -566,32 +538,23 @@ public class OntologyBasedContentManagement implements EntryPoint {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void onSuccess(ArrayList<String[]> result) {
-				// TODO Auto-generated method stub
-				// sugT = result;
 				logger.log(Level.SEVERE, "First");
 				populateSuggestedTriples(result);
 				Window.alert("Pass");
 			}
 
 		};
-		// suggestionButton.addClickHandler(new ClickHandler(){
-		// @Override
-		// public void onClick(ClickEvent event){
 		tripleTable.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				com.google.gwt.user.client.ui.HTMLTable.Cell cell = tripleTable.getCellForEvent(event);
 				int cellIndex = cell.getCellIndex();
 				int rowIndex = cell.getRowIndex();
-
-				// greetingService.suggestedTriples(tripleTable.getHTML(rowIndex,
-				// 0), suggestedTriples);
 				if (cellIndex == 4 || cellIndex == 0) {
 					logger.log(Level.SEVERE, "Sending: " + tripleTable.getText(rowIndex, 0));
 					greetingService.suggestedTriples(tripleTable.getHTML(rowIndex, 0), suggestedTriples);
@@ -600,24 +563,16 @@ public class OntologyBasedContentManagement implements EntryPoint {
 
 			}
 		});
-		// }
-		// });
 
-		search.addClickListener(new ClickListener() {
+		search.addClickHandler(new ClickHandler() {
 			@Override
-			public void onClick(Widget sender) {
+			public void onClick(ClickEvent event) {
 				String blah = content.getText();
-
-				greetingService.wordExists(blah, webBox.getText(), subjectIndexOfContent);
-				content.setFocus(true);
-				content.selectAll();
-			}
-		});
-		objectFromContent.addClickListener(new ClickListener() {
-			@Override
-			public void onClick(Widget sender) {
-				content.getText().replace(' ', '_');
-				greetingService.wordExists(content.getText(), webBox.getText(), subjectIndexOfContent);
+				if (radioA.isChecked() || !radioB.isChecked())
+					greetingService.wordExists(blah, webBox.getText(), subjectIndexOfContent);
+				else{
+					printSubject();
+				}
 				content.setFocus(true);
 				content.selectAll();
 			}
@@ -628,7 +583,10 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			public void onKeyUp(KeyUpEvent event) {
 
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					greetingService.wordExists(content.getText(), webBox.getText(), subjectIndexOfContent);
+					if (radioA.isChecked() || !radioB.isChecked())
+						greetingService.wordExists(content.getText(), webBox.getText(), subjectIndexOfContent);
+					else
+						printSubject();
 					content.setFocus(true);
 					content.selectAll();
 				}
@@ -642,10 +600,19 @@ public class OntologyBasedContentManagement implements EntryPoint {
 				repository_downloaded = false;
 			}
 		});
-
-		Ont_Table.setWidget(1, 0, ontology_Classes);
-		Ont_Table.setWidget(1, 2, property_Resources);
-		Ont_Table.setWidget(1, 4, property_Literals);
+		
+		Ont_Table.setWidget(0, 2, menuBar);
+		menuBar.setSize("100%", "100%");
+		
+		Classes = new MenuItem("Classes", false, menuBar_3);
+		Ontology_Contents_Holder.addItem(Classes);
+		menuBar_2.addItem(mntmObject);
+		menuBar_2.addItem(mntmData);
+		Ontology_Contents_Holder.addItem(Properties);
+		menuBar.addItem(Ontology_Name);
+		
+		Ont_Table.setWidget(2, 2, property_Resources);
+		Ont_Table.setWidget(2, 4, property_Literals);
 
 		/*
 		 * Adding Change listener to listboxes
@@ -813,8 +780,8 @@ public class OntologyBasedContentManagement implements EntryPoint {
 							tripleTable.removeRow(rowIndex);
 						}
 						rowIndex = tripleTable.getRowCount();
-						
-						tripleTable.setWidget(rowIndex -1, 5, save);
+
+						tripleTable.setWidget(rowIndex - 1, 5, save);
 					}
 
 				});
@@ -823,15 +790,43 @@ public class OntologyBasedContentManagement implements EntryPoint {
 		});
 
 	}
-
+	
 	protected void populate_ClassBox(int index) {
 		ontology_Classes.clear();
+
 		ontology_Classes.addItem("NONE");
-		String variable = "";
+//		menuBar_3.addItem(text, cmd)
+//		String variable = "";
 		Iterator<String> it = ontology.get(index).getClasses().iterator();
 		while (it.hasNext()) {
-			variable = it.next();
+			final String variable = it.next();
 			ontology_Classes.addItem(variable);
+			menuBar_3.addItem(variable, new Command(){
+
+				@Override
+				public void execute() {
+					String p = null;
+					if (tripleTable.getText(row - 1, 2).isEmpty())
+						row--;
+
+					if (tripleTable.getText(row, 1).isEmpty()) {
+						tripleTable.setText(row, 2, variable);
+					} else {
+						p = tripleTable.getText(row, 1);
+						p = p.substring(p.indexOf('#') + 1, p.length());
+						if (ontology.get(ontologies.getSelectedIndex()).getProperties().contains(p) || p.equals("RDF.type")) {
+							tripleTable.setText(row, 2, variable);
+						} else {
+							if (variable.startsWith("http://")) {
+								Window.alert("Must enter a literal value");
+							} else {
+								tripleTable.setText(row, 2, variable);
+							}
+						}
+					}
+				}
+				
+			});
 		}
 
 	}
@@ -864,17 +859,18 @@ public class OntologyBasedContentManagement implements EntryPoint {
 	protected void printSubject() {
 
 		subject = webBox.getText().concat("/" + content.getText().replace(' ', '_'));
-
+		
 		logger.log(Level.SEVERE, "rowcount:" + row);
 		content.getText().replace(' ', '_');
 		if (radioA.isChecked() || !radioB.isChecked()) {
 			row = tripleTable.getRowCount();
-			if ((tripleTable.getText(row - 1,2).isEmpty() || (!tripleTable.getText(row - 1, 2).isEmpty() && tripleTable.getText(row - 1,
-					0).isEmpty()))) {
+			if ((tripleTable.getText(row - 1, 2).isEmpty() || (!tripleTable.getText(row - 1, 2).isEmpty() && tripleTable
+					.getText(row - 1, 0).isEmpty()))) {
 				row--;
 			} else if (tripleTable.getText(row - 1, 0).isEmpty())
 				row--;
 			tripleTable.setText(row, 0, subject);
+			
 		} else {
 			// Adding literal object
 			String obj = content.getText().replace(' ', '_');
@@ -885,7 +881,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 					Window.alert("Must select from Ontology Classes, predicate is an Object Property");
 				}
 			} else {
-				tripleTable.setText(row,2, obj);
+				tripleTable.setText(row, 2, obj);
 			}
 			return;
 		}
@@ -921,23 +917,24 @@ public class OntologyBasedContentManagement implements EntryPoint {
 
 	}
 
-	protected void addLitObject(String item){
+	protected void addLitObject(String item) {
 		tripleTable.setText(row, 2, item);
 	}
-	
+
+	/*
+	 * Adding Class Object to triple table
+	 */
 	protected void addObject(String item) {
 		String p = null;
-		logger.log(Level.SEVERE, "Row: " + row);
 		if (tripleTable.getText(row - 1, 2).isEmpty())
 			row--;
-		
-		
+
 		if (tripleTable.getText(row, 1).isEmpty()) {
 			tripleTable.setText(row, 2, item);
 		} else {
 			p = tripleTable.getText(row, 1);
 			p = p.substring(p.indexOf('#') + 1, p.length());
-			if (ontology.get(ontologies.getSelectedIndex()).getProperties().contains(p)) {
+			if (ontology.get(ontologies.getSelectedIndex()).getProperties().contains(p) || p.equals("RDF.type")) {
 				tripleTable.setText(row, 2, item);
 			} else {
 				if (item.startsWith("http://")) {
@@ -949,9 +946,11 @@ public class OntologyBasedContentManagement implements EntryPoint {
 		}
 	}
 
+	/*
+	 * Adding either a O.Prop or D.Prop to prediate in triple table
+	 */
 	protected void addPredicate(String item) {
 		String o = null;
-		logger.log(Level.SEVERE, "Row: " + row);
 		if (tripleTable.getText(row, 2).length() > 0) {
 			o = tripleTable.getText(row, 2);
 			o = o.substring(o.indexOf('#') + 1, o.length());
@@ -1047,7 +1046,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			// cb.setChecked(true);
 			cb.setValue(false);
 			ft.setWidget(rcount, 3, cb);
-			
+
 			cb.addClickHandler(new ClickHandler() {
 
 				@SuppressWarnings("deprecation")
@@ -1088,7 +1087,7 @@ public class OntologyBasedContentManagement implements EntryPoint {
 	@SuppressWarnings("deprecation")
 	protected void loadPageTwo(String path) {
 		RootPanel.get("stockList").clear();
-		mainPanel.clear();
+		// mainPanel.clear();
 		// mainPanel.add(home_page);
 		logger.log(Level.SEVERE, ontologies.getSelectedIndex() + " and " + path);
 
@@ -1186,12 +1185,6 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			@Override
 			public void onTreeItemSelected(TreeItem item) {
 				logger.log(Level.SEVERE, "Item = " + item.getText());
-				// greetingService.getQueryInstances(
-				// "",
-				// "RDF.type",
-				// ontology.get(ontologies.getSelectedIndex()).getBaseURI()
-				// .concat(ontology_Classes.getItemText(ontology_Classes.getSelectedIndex())),
-				// "", new queryInstances());
 				instance_grid.removeAllRows();
 				greetingService.getInstances(export_path, item.getText(), entercontext.getText(), new TreeItemInstances());
 			}
@@ -1266,9 +1259,9 @@ public class OntologyBasedContentManagement implements EntryPoint {
 			Window.alert(names);
 			export_fp = names;
 			ontology.add(new Ontology("Export", export_fp, null, null, null, null));
-//			ontologies.addItem(ontology.get(ontology.size() - 1).getName());
-//			ontologies.setSelectedIndex(ontology.size() - 1);
-			if(repository_downloaded)
+			// ontologies.addItem(ontology.get(ontology.size() - 1).getName());
+			// ontologies.setSelectedIndex(ontology.size() - 1);
+			if (repository_downloaded)
 				loadPageTwo(export_fp);
 		}
 	}
@@ -1355,34 +1348,21 @@ public class OntologyBasedContentManagement implements EntryPoint {
 		instance_link.clear();
 		page2Panel.clear();
 		uploadedOntologies.add(ontologies);
-		
-		/* home page */
-		mainPanel.add(frame); // browser
-		mainPanel.add(uploadedOntologies);
-		mainPanel.add(addPanel); // url for browser
-		mainPanel.add(loadOntologyInternet);
-		mainPanel.add(Ont_Table); // listboxes
-		mainPanel.add(queryBox);
-		mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-		mainPanel.add(queryButton);
-		mainPanel.add(new_page);
-		mainPanel.add(download_repository);
-
 
 		Ont_Table.setWidget(1, 0, ontology_Classes);
 		Ont_Table.setWidget(1, 2, property_Resources);
 		Ont_Table.setWidget(1, 4, property_Literals);
 
-		RootPanel.get("stockList").add(frame, 0, 80);
-		RootPanel.get("stockList").add(bottomOfScreen, 5, (int) (Window.getClientHeight() / 1.1));
+		RootPanel.get("stockList").add(frame, RootPanel.get("stockList").getAbsoluteLeft(), RootPanel.get("stockList").getAbsoluteTop());
+		RootPanel.get("stockList").add(bottomOfScreen, RootPanel.get("stockList").getAbsoluteLeft(), Window.getClientHeight());
 		// RootPanel.get().add(tripleTable, 5,
 		// (int) ((Window.getClientHeight() / 1.1) + 30));
-//		RootPanel.get("stockList").add(save, 700, (int) ((Window.getClientHeight() / 1.1) + 30));
-		RootPanel.get("stockList").add(form, frame.getOffsetWidth(), frame.getAbsoluteTop());
+		// RootPanel.get("stockList").add(save, 700, (int)
+		// ((Window.getClientHeight() / 1.1) + 30));
+		RootPanel.get("stockList").add(form, frame.getOffsetWidth() + 10, frame.getAbsoluteTop());
 		RootPanel.get("stockList").add(mainPanel, frame.getOffsetWidth() + 10, form.getOffsetHeight() + frame.getAbsoluteTop());
 
 		browseTree.clear();
 
 	}
-
 }

@@ -194,11 +194,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 				String uri = name.getSignature().toString();
 				int indexOfhash = uri.indexOf('#', 0) + 1;
 				uri = uri.substring(indexOfhash, uri.length() - 2);
-				// System.out.println(uri); // HAVE BASE URI!!!!!
 				ontologyList.add(uri);
 			}
 		}
-		// System.out.println(ontologyList.size());
 		return ontologyList;
 	}
 
@@ -226,10 +224,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	@Override
 	public Integer[] wordExists(String searchWord, String webPage) throws IllegalArgumentException, IOException {
 		Integer[] start_and_end_index = new Integer[2];
-		// File file = new File("/tmp/input.html");
-		// System.out.println(webPage + "/" + searchWord);
-
-		// Document doc = Jsoup.connect(input).get();
 		String html;
 		int index = 0;
 		setIndex(index);
@@ -314,10 +308,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		URI pre;
 		URI rObject = null;
 		Literal lObject = null;
-		URI context = fa.createURI("http://www.cngl.ie");
+		URI context;
 		if (triple[1].equals("RDF.type")) {
 			System.out.println("RDF.TYPE");
 			pre = RDF.TYPE;
+			rObject = fa.createURI(triple[2]);
+			context = fa.createURI(rObject.getNamespace());
+			System.out.println("Namespace: " + rObject.getNamespace());
 			object = true;
 		}
 		else if (triple[1].endsWith("*")) {
@@ -326,15 +323,18 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			triple[1] = triple[1].substring(0, triple[1].length() - 1);
 			pre = fa.createURI(triple[1]);
 			System.out.println(triple[1]);
+			context = fa.createURI(pre.getNamespace());
 			object = false;
 		} 
 		else{
 			System.out.println("Resource");
 			rObject = fa.createURI(triple[2]);
 			pre = fa.createURI(triple[1]);
+			context = fa.createURI(rObject.getNamespace());
 			object = true;
 		}
 		try {
+			
 			rep.initialize();
 			RepositoryConnection con = rep.getConnection();
 			
