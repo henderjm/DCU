@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Sesame"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Protege"/>
+	<classpathentry kind="lib" path="/Users/markhender/Desktop/commons-fileupload-1.2.2.jar"/>
+	<classpathentry kind="lib" path="/Users/markhender/Downloads/jsoup-1.6.3.jar"/>
+	<classpathentry kind="output" path="war/WEB-INF/classes"/>
+</classpath>
